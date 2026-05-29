@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+    <style>
+        body {
+          height: 100vh;
+        }
+        .blockBtn {
+			width: 300px;
+			height: 300px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #436da0;
+        }
+        .blueBtn {
+            color: #e0e1e2;
+            background: #436da0;
+            border: none;
+            font-size: 20px;
+            padding: 8px 30px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px #28243d, inset 0 1px 3px #eee7e790, inset 0 -2px 3px #28243d90;
+			transition: 0.5s;
+        }
+        .blueBtn:hover {
+            color: #f2f3f5;
+            background: #4e7fab;
+        }
+        .blueBtn:active {
+            background: #406593;
+            color: #b4becc;
+            box-shadow: 0 1px 3px #eee7e790, inset 0 1px 10px #28243d90, inset 0 -1px 10px #ffffff20;
+        }
+
+		canvas {
+			display: block;
+			width: 200px;
+			height: 200px;
+			position: relative;
+			background: azure;
+		}
+
+    </style>
+</head>
+<body>
+<div class="blockBtn">
+	<button class="blueBtn">Кнопка</button>
+</div>
+
+<div class="blockSwitch">
+	<div class="switch">
+		<div class="ball"></div>
+	</div>
+</div>
+
+<script type="module">
+
+	import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+	const scene = new THREE.Scene();
+
+
+	const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+	camera.position.z = 10;
+
+
+	const renderer = new THREE.WebGLRenderer({
+		antialias:true,
+		alpha:true
+	});
+
+	renderer.setSize(200, 200);
+
+	renderer.domElement.style.width = '200px';
+	renderer.domElement.style.height = '200px';
+
+	document.body.appendChild(renderer.domElement);
+
+
+	const light = new THREE.DirectionalLight(0xffffff, 1);
+	light.position.set(0, 8, 10);
+
+	scene.add(light);
+	scene.add(new THREE.AmbientLight(0xffffff, 1.1));
+
+
+	const trackGeometry = new THREE.CapsuleGeometry(0.72, 1.6, 32, 64);
+	const trackCanvas = document.createElement('canvas');
+
+	trackCanvas.width = 2048;
+	trackCanvas.height = 256;
+
+	const trackCtx = trackCanvas.getContext('2d');
+	trackCtx.fillStyle = '#34c759';
+	trackCtx.fillRect(0, 0, 2048, 256);
+
+	const trackTexture = new THREE.CanvasTexture(trackCanvas);
+	trackTexture.center.set(0.5, 0.5);
+	trackTexture.rotation = -Math.PI / 2;
+
+	const trackMaterial = new THREE.MeshPhysicalMaterial({
+		map:trackTexture,
+		roughness:0.9,
+		metalness:0.05,
+		clearcoat:1,
+		depthWrite:false
+	});
+
+	const track = new THREE.Mesh(trackGeometry, trackMaterial);
+
+	const shadowGeometry = new THREE.CapsuleGeometry(0.69, 1.56, 32, 64);
+
+	const shadowCanvas = document.createElement('canvas');
+	shadowCanvas.width = 512;
+	shadowCanvas.height = 128;
+
+	const shadowCtx = shadowCanvas.getContext('2d');
+	const gradient = shadowCtx.createLinearGradient(0, 0, 0, 128);
+
+	gradient.addColorStop(0, 'rgba(0,0,0,0.75)');
+	gradient.addColorStop(0.25, 'rgba(0,0,0,0.18)');
+	gradient.addColorStop(0.5, 'rgba(0,0,0,0.3)');
+	gradient.addColorStop(0.75, 'rgba(0,0,0,0.48)');
+	gradient.addColorStop(1, 'rgba(0,0,0,0.75)');
+
+	shadowCtx.fillStyle = gradient;
+	shadowCtx.fillRect(0, 0, 512, 128);
+
+	const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
+
+	const shadowMaterial = new THREE.MeshBasicMaterial({
+		map: shadowTexture,
+		transparent: true
+	});
+
+	const innerShadow = new THREE.Mesh(shadowGeometry, shadowMaterial);
+	innerShadow.rotation.z = Math.PI / 2;
+
+	innerShadow.position.z = -0.15;
+	scene.add(innerShadow);
+	track.renderOrder = 0;
+
+	const borderGeometry = new THREE.CapsuleGeometry(1.4, 2.32, 32, 64);
+
+	const borderMaterial = new THREE.MeshPhysicalMaterial({
+		color:'#fff',
+		roughness:0.4,
+		metalness:-0.55,
+		clearcoat:1,
+		clearcoatRoughness:0.7
+	});
+
+	const border = new THREE.Mesh(borderGeometry, borderMaterial);
+
+	const borderShadowGeometry = new THREE.CapsuleGeometry(1.4, 2.72, 32, 64);
+
+	const borderShadowMaterial = new THREE.MeshBasicMaterial({
+		color:'#000000',
+		transparent:true,
+		opacity:0.1
+	});
+
+	const borderShadow = new THREE.Mesh(borderShadowGeometry, borderShadowMaterial);
+	borderShadow.rotation.z = Math.PI / 2;
+	borderShadow.position.z = -1.9;
+	borderShadow.position.y = -0.2;
+	scene.add(borderShadow);
+
+	border.rotation.z = Math.PI / 2;
+	border.position.z = -1.4;
+	border.renderOrder = -1;
+	scene.add(border);
+
+	track.rotation.z = Math.PI / 2;
+	track.position.z = -0.3;
+	scene.add(track);
+
+
+	const geometry = new THREE.SphereGeometry(0.7, 128, 128);
+
+	const canvas = document.createElement('canvas');
+
+	canvas.width = 2048;
+	canvas.height = 1024;
+
+	const ctx = canvas.getContext('2d');
+	ctx.fillStyle = '#ff3b30';
+	ctx.fillRect(0, 0, 1024, 1024);
+	ctx.fillStyle = '#34c759';
+	ctx.fillRect(1024, 0, 1024, 1024);
+
+
+	const texture = new THREE.CanvasTexture(canvas);
+	texture.wrapS = THREE.RepeatWrapping;
+	texture.offset.x = 0.5;
+
+
+	const material = new THREE.MeshPhysicalMaterial({
+		map:texture,
+		roughness:0.2,
+		metalness:0.05,
+		clearcoat:1
+	});
+
+
+	const sphere = new THREE.Mesh(geometry, material);
+
+	const sphereShadowGeometry = new THREE.CircleGeometry(0.62, 64);
+
+	const sphereShadowMaterial = new THREE.MeshBasicMaterial({
+		color:'#000000',
+		transparent:true,
+		opacity:0.18
+	});
+
+	const sphereShadow = new THREE.Mesh(sphereShadowGeometry, sphereShadowMaterial);
+
+	sphereShadow.position.z = -0.24;
+	sphereShadow.position.x = sphere.position.x;
+	scene.add(sphereShadow);
+
+	sphere.position.x = -0.72;
+	sphere.position.z = 0.12;
+	sphere.rotation.y = Math.PI;
+	sphere.renderOrder = 1;
+	scene.add(sphere);
+
+
+	let active = false;
+	let targetX = -0.72;
+	let targetRotation = sphere.rotation.y;
+	const moveSpeed = 0.035;
+	const rotateSpeed = 0.07;
+
+	window.addEventListener('click', () => {
+		active = !active;
+		targetX = active ? 0.72 : -0.72;
+		targetRotation = active ? targetRotation + Math.PI : targetRotation - Math.PI;
+	});
+
+
+	function animate() {
+
+		requestAnimationFrame(animate);
+
+		const moveDirection = Math.sign(targetX - sphere.position.x);
+
+		sphere.position.x += moveDirection * moveSpeed;
+
+		if (Math.abs(targetX - sphere.position.x) < moveSpeed) {
+			sphere.position.x = targetX;
+		}
+
+		sphereShadow.position.x = sphere.position.x;
+
+
+		const rotationDirection = Math.sign(targetRotation - sphere.rotation.y);
+		sphere.rotation.y += rotationDirection * rotateSpeed;
+
+		if (Math.abs(targetRotation - sphere.rotation.y) < rotateSpeed) {
+			sphere.rotation.y = targetRotation;
+		}
+
+
+		const leftEdge = -0.72;
+		const rightEdge = 0.72;
+		const sphereRadius = 0.7;
+
+		let progress = (sphere.position.x - leftEdge) / (rightEdge - leftEdge);
+
+		const radiusOffset = sphereRadius / (rightEdge - leftEdge);
+		progress = radiusOffset + progress * (1 - radiusOffset * 2);
+
+		progress = Math.max(0, Math.min(1, progress));
+
+		trackCtx.clearRect(0, 0, 2048, 256);
+
+		if (active) {
+
+			trackCtx.fillStyle = '#34c759';
+			trackCtx.fillRect(0, 0, 2048 * progress, 256);
+
+			trackCtx.fillStyle = '#ff3b30';
+			trackCtx.fillRect(2048 * progress, 0, 2048, 256);
+
+		} else {
+			trackCtx.fillStyle = '#ff3b30';
+			trackCtx.fillRect(2048 * progress, 0, 2048, 256);
+
+			trackCtx.fillStyle = '#34c759';
+			trackCtx.fillRect(0, 0, 2048 * progress, 256);
+		}
+
+		trackTexture.needsUpdate = true;
+
+		renderer.render(scene, camera);
+	}
+
+	animate();
+
+</script>
+
+</body>
+</html>

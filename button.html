@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Кнопки</title>
+    <style>
+	    .blockBtn {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			gap: 10px;
+	    }
+        .btn {
+            --btn-bg: #ebebeb;
+            --btn-color: #000;
+            --btn-border: 1px solid #b4b4b4;
+	        --btn-hover: #f4f4f4;
+	        --btn-active: #e1e1e1;
+	        --btn-after: #dc241f;
+			--btn-color-active: #7a7a7a;
+			--btn-svg-fill: ;
+			--btn-svg-fill-active: ;
+	        --btn-padding: 3px 15px;
+
+            background: var(--btn-bg);
+            color: var(--btn-color);
+            border: var(--btn-border);
+            border-radius: 4px;
+            padding: var(--btn-padding);
+            width: fit-content;
+            cursor: pointer;
+	        height: 30px;
+			fill: var(--btn-svg-fill);
+
+        }
+		.btn:hover {
+			background: var(--btn-hover);
+		}
+		.btn:active {
+			background: var(--btn-active);
+			color: var(--btn-color-active);
+			fill: var(--btn-svg-fill-active);
+		}
+		.btn:disabled {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+
+        .btn-border-red {
+            --btn-border: 2px solid #de352e;
+			--btn-hover: #f4f4f4;
+			--btn-active: #cecece;
+        }
+		.btn-fill-red {
+			--btn-bg: #de352e;
+			--btn-color: #fff;
+			--btn-border: none;
+			--btn-hover: #e83129;
+			--btn-active: #a9110c;
+			--btn-color-active: #e4a9a9;
+		}
+		.btn-fill-green {
+			--btn-bg: #6e9735;
+			--btn-color: #fff;
+			--btn-border: none;
+			--btn-hover: #86b445;
+			--btn-active: #5e822b;
+			--btn-color-active: #e0ebd0;
+		}
+		.btn-border-green {
+			--btn-border: 2px solid #6e9735;
+			--btn-hover: #f4f4f4;
+			--btn-active: #f0f0f0;
+		}
+		.btn-arrow {
+			position: relative;
+		}
+		.btn-arrow::after {
+			--btn-after: #dc241f;
+
+			content: "";
+			position: absolute;
+			right: 5px;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 0;
+			height: 0;
+			border-left: 4px solid var(--btn-after);
+			border-top: 4px solid transparent;
+			border-bottom: 4px solid transparent;
+		}
+		.btn-arrow:active::after {
+			--btn-after: #a95e5c;
+		}
+		.btn-icon {
+			--btn-svg-fill: #000;
+			--btn-svg-fill-active: #7a7a7a;
+		}
+		.btn-image {
+			background-size: 27px !important;
+
+			--btn-padding: 3px 8px 5px 26px;
+			--btn-bg: url(/files/excel_red.png) no-repeat;
+			--btn-hover: url(/files/excel_red.png) no-repeat;
+			--btn-active: url(/files/excel.png) no-repeat;
+		}
+    </style>
+</head>
+<body>
+
+<div class="blockBtn">
+	<div></div>
+	<div>1</div>
+	<div>2</div>
+	<div>3</div>
+	<div>4 (если иконку можно сделать с помощью css)</div>
+	<div>5</div>
+	<div>6</div>
+
+	<div>Обычное, hover, active</div>
+	<button class="btn btn-common">Посмотреть</button>
+	<button class="btn btn-border-red">Посмотреть</button>
+	<button class="btn btn-fill-red">Посмотреть</button>
+	<button class="btn btn-arrow">Посмотреть</button>
+	<button class="btn btn-fill-green">Посмотреть</button>
+	<button class="btn btn-border-green">Посмотреть</button>
+
+	<div>disabled</div>
+	<button class="btn btn-common" disabled>Посмотреть</button>
+	<button class="btn btn-border-red" disabled>Посмотреть</button>
+	<button class="btn btn-fill-red" disabled>Посмотреть</button>
+	<button class="btn btn-arrow" disabled>Посмотреть</button>
+	<button class="btn btn-fill-green" disabled>Посмотреть</button>
+	<button class="btn btn-border-green" disabled>Посмотреть</button>
+</div>
+
+
+<div>
+	<div style="margin: 20px 0;">Пример если иконка в кнопки в виде svg</div>
+	<button class="btn btn-icon">
+		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+		     width="12px" height="12px" viewBox="0 0 528.899 528.899"
+		     xml:space="preserve">
+			<g>
+				<path d="M328.883,89.125l107.59,107.589l-272.34,272.34L56.604,361.465L328.883,89.125z M518.113,63.177l-47.981-47.981
+					c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611
+					C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069
+					L27.473,390.597L0.3,512.69z"/>
+			</g>
+		</svg>
+		Редактировать
+	</button>
+
+	<button class="btn btn-icon" disabled>
+		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+		     width="12px" height="12px" viewBox="0 0 528.899 528.899"
+		     xml:space="preserve">
+			<g>
+				<path d="M328.883,89.125l107.59,107.589l-272.34,272.34L56.604,361.465L328.883,89.125z M518.113,63.177l-47.981-47.981
+					c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611
+					C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069
+					L27.473,390.597L0.3,512.69z"/>
+			</g>
+		</svg>
+		Редактировать
+	</button>
+</div>
+
+<div>
+	<div style="margin: 20px 0;">Пример если иконка в кнопки в виде картинки (например png)</div>
+	<button class="btn btn-image">Посмотреть</button>
+	<button class="btn btn-image" disabled>Посмотреть</button>
+</div>
+
+
+
+
+
+</body>
+</html>

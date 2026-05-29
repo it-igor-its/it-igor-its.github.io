@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Форма</title>
+    <style>
+        body {
+            background-color: #8871ed;
+            margin: 0;
+            font-family: monospace;
+        }
+        .bgFrom {
+            background-color: #f9f9f8;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+        .bgAdd {
+            background: linear-gradient(to right, #fff9c7, #fffad3, #fff9c7);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            border-top: 1px solid #fff;
+        }
+        .bgAroundFrom {
+            background-color: #dddce3;
+            padding: 40px;
+            margin: 10px auto 5px 0;
+            width: 650px;
+        }
+        .blockGrid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px 20px;
+            align-items: center;
+            padding: 20px 20% 20px 20px;
+        }
+        .blockRight {
+            grid-column: 2;
+        }
+        .labelRight {
+            text-align: right;
+        }
+        textarea, input[type="text"], input[type="color"] {
+            border: none;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+            background: #fff;
+        }
+        textarea, input[type="text"] {
+            padding-left: 5px;
+        }
+        input[name="name"] {
+            height: 20px;
+        }
+        .btnSubmit {
+            color: #fff;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 5px;
+            border: none;
+            background: linear-gradient(to bottom, #5a43d9, #8870ec, #5a43d9);
+            padding: 10px 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+        }
+        .noticeForm {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .formTitle {
+            font-size: 18px;
+        }
+        #radioSwitch, #checkboxSwitch {
+            margin: 0;
+        }
+        .inputCenter {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .inputTop {
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+        }
+        .underListFirst {
+            width: calc(100% - 6px);
+            height: 4px;
+            background-color: #f9f9f8;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            margin: auto;
+            z-index: 1;
+            position: relative;
+        }
+        .underListSecond {
+            width: calc(100% - 10px);
+            height: 4px;
+            background-color: #f9f9f8;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+            margin: auto;
+            position: relative;
+        }
+        .checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .checkbox input {
+            display: none;
+        }
+        .checkInBox {
+            width: 11px;
+            height: 11px;
+            border: 1px solid #efe89b;
+            border-radius: 2px;
+            display: inline-block;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .checkbox input:checked + .checkInBox {
+            background: #fffbd0;
+        }
+        .checkbox input:checked + .checkInBox::after {
+            content: "";
+            position: absolute;
+            left: 3px;
+            top: 0;
+            width: 3px;
+            height: 6px;
+            border: solid #914e93;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+
+<div class="bgAroundFrom">
+    <form method="post" action="/form/submit">
+        <div class="noticeForm">
+            <div style="font-size: 24px">Заполните поля</div>
+            <div>ну пожалуйста</div>
+        </div>
+        <div class="bgFrom">
+            <div>
+                <div class="blockGrid">
+                    <div class="blockRight formTitle">Основное</div>
+
+                    <label for="name" class="labelRight">Имя</label>
+                    <input type="text" id="name" name="name" placeholder="по паспорту" autocomplete="off">
+
+                    <label for="color" class="labelRight">Цвет вашего настроения</label>
+                    <input type="color" id="color" name="color" value="#000fff">
+                </div>
+
+                <div class="blockGrid bgAdd">
+                    <div class="blockRight formTitle">Дополнительное</div>
+
+                    <label for="comment" class="labelRight">Комментарий</label>
+                    <textarea id="comment" name="comment" placeholder="Напишите хоть что-нибудь.&#10;Если хотите, конечно." autocomplete="off"></textarea>
+                </div>
+
+                <div class="blockGrid">
+                    <div class="blockRight inputCenter">
+                        <input id="radioSwitch" type="radio" name="simpleRadio" value="false">
+                        <label for="radioSwitch">Ну а тут просто полежит радиобатон</label>
+                    </div>
+
+                    <div class="blockRight inputTop">
+<!--                        <input id="checkboxSwitch" type="checkbox" name="simpleCheckbox" checked="checked">-->
+<!--                        <label for="checkboxSwitch">Соглашаюсь на все, чтобы вы не придумали и осознаю, что это может означать <a href="/">что угодно</a></label>-->
+
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <span class="checkInBox"></span>
+                            <span>Соглашаюсь на все, чтобы вы не придумали и осознаю, что это может означать <a href="/">что угодно</a></span>
+                        </label>
+                    </div>
+
+                    <button class="blockRight btnSubmit" type="submit">Отправить все мои данные</button>
+                </div>
+            </div>
+        </div>
+        <div class="underListFirst"></div>
+        <div class="underListSecond"></div>
+    </form>
+</div>
+
+</body>
+</html>

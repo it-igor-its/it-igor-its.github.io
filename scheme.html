@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Схема</title>
+</head>
+<body>
+<canvas id="canvas" width="985" height="761" style="border:1px solid #ccc; background: #2d333c"></canvas>
+<script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const nodes = [
+	    {x: 21, y: 97, height: 40, text: "Алликсаар"},
+	    {x: 741, y: 86, height: 61, text: "Ду Хаст\nВячеславович"},
+	    {x: 741, y: 168, height: 40, text: "Анастасия Ширинкина"},
+	    {x: 142, y: 228, height: 61, text: "Станислав\nКлитотехнис"},
+	    {x: 261, y: 312, height: 61, text: "Людмила\nВодолазская"},
+	    {x: 261, y: 393, height: 40, text: "Ольга Боргдорф"},
+	    {x: 741, y: 240, height: 40, text: "Александр Троян"},
+	    {x: 741, y: 393, height: 40, text: "Дмитрий Возигнуй"},
+	    {x: 741, y: 454, height: 40, text: "Кристина Болтушкина"},
+	    {x: 741, y: 515, height: 40, text: "Максим Висюлькин"},
+	    {x: 261, y: 576, height: 40, text: "Сергей Брус"},
+	    {x: 142, y: 637, height: 40, text: "Игорь Зверёк"},
+	    {x: 142, y: 698, height: 40, text: "Антон Строй"},
+    ];
+
+    function drawBlock(node) {
+	    ctx.fillStyle = "#fff";
+		const widthBlock = 200;
+		const widthHeight = node.height;
+	    ctx.fillRect(node.x, node.y, widthBlock, widthHeight);
+
+	    ctx.fillStyle = "#000";
+	    ctx.font = "16px Arial";
+	    ctx.textAlign = "center";
+	    ctx.textBaseline = "middle";
+
+	    const texts = node.text.split("\n");
+	    const centerX = node.x + widthBlock / 2;
+	    const centerY = node.y + widthHeight / 2 - (texts.length - 1) * 8;
+
+	    texts.forEach((text, i) => {
+		    ctx.fillText(text, centerX, centerY + i * 20);
+	    });
+    }
+
+	function drawLine() {
+		ctx.strokeStyle = "#a7a7a7";
+		ctx.lineWidth = 1;
+
+		ctx.beginPath();
+		ctx.moveTo(221, 117);
+		ctx.lineTo(741, 117);
+		ctx.stroke();
+		drawArrow('left', 221, 117);
+
+		ctx.beginPath();
+		ctx.moveTo(721, 117);
+		ctx.lineTo(721, 188);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(721, 188);
+		ctx.lineTo(741, 188);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(342, 260);
+		ctx.lineTo(741, 260);
+		ctx.stroke();
+		drawArrow('left', 342, 260);
+
+		ctx.beginPath();
+		ctx.moveTo(142, 260);
+		ctx.lineTo(122, 260);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(142, 657);
+		ctx.lineTo(122, 657);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(142, 718);
+		ctx.lineTo(122, 718);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(122, 137);
+		ctx.lineTo(122, 718);
+		ctx.stroke();
+		drawArrow('top', 122, 137);
+
+
+		ctx.beginPath();
+		ctx.moveTo(261, 596);
+		ctx.lineTo(241, 596);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(261, 413);
+		ctx.lineTo(241, 413);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(261, 342);
+		ctx.lineTo(241, 342);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(241, 289);
+		ctx.lineTo(241, 596);
+		ctx.stroke();
+		drawArrow('top', 241, 289);
+
+		ctx.beginPath();
+		ctx.moveTo(461, 413);
+		ctx.lineTo(741, 413);
+		ctx.stroke();
+		drawArrow('left', 461, 413);
+
+		ctx.beginPath();
+		ctx.moveTo(961, 413);
+		ctx.lineTo(941, 413);
+		ctx.stroke();
+		drawArrow('left', 941, 413);
+
+		ctx.beginPath();
+		ctx.moveTo(721, 413);
+		ctx.lineTo(721, 535);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(961, 413);
+		ctx.lineTo(961, 535);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(941, 535);
+		ctx.lineTo(961, 535);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(721, 535);
+		ctx.lineTo(741, 535);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(721, 474);
+		ctx.lineTo(741, 474);
+		ctx.stroke();
+	}
+
+	function drawArrow(direction, x, y) {
+		const arrow = 5;
+		if (direction === "left") {
+			ctx.beginPath();
+			ctx.moveTo(x, y);
+			ctx.lineTo(x + arrow, y + arrow);
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.moveTo(x, y);
+			ctx.lineTo(x + arrow, y - arrow);
+			ctx.stroke();
+		} else if (direction === "top") {
+			ctx.beginPath();
+			ctx.moveTo(x, y);
+			ctx.lineTo(x - arrow, y + arrow);
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.moveTo(x, y);
+			ctx.lineTo(x + arrow, y + arrow);
+			ctx.stroke();
+		}
+	}
+
+    function render() {
+	    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	    ctx.fillStyle = "#fff";
+	    ctx.font = "28px Arial";
+	    ctx.fillText("Масоны Самсона", 22, 46);
+
+	    drawLine();
+
+	    nodes.forEach(drawBlock);
+    }
+
+    render();
+</script>
+</body>
+</html>
